@@ -13,13 +13,16 @@ function App() {
         logs: true
       });
 
-      project.error((res) => {
-        console.log('error:', res);
+      project.subscribeError((res) => {
+        console.log('Iframe error:', res);
         alert(res.message);
       });
 
-      project.modals((res) => {
-        console.log('Modal message:', res);
+      project.subscribeEvent((res) => {
+        console.log('Iframe event:', res);
+        if (res.data.event === 'PROJECT_CREATE') {
+          alert(`Your order was successfully created! Your CODE is "${res.data.code}"`)
+        }
       });
 
       setIFrameProject(project);
@@ -49,7 +52,7 @@ function App() {
               value={token}
               onChange={(e) => setToken(e.target.value)}
             ></textarea>
-            <button id="submitButton" type="submit" disabled={token.length < 100}>Cargar modulo</button>
+            <button id="submitButton" type="submit" disabled={token.length < 100}>Load form</button>
         </form>
       </div>
       <div className="content-iframe">
